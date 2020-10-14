@@ -100,21 +100,41 @@ def recenter(clusters: {}) -> []:
     return new_cluster_center
 
 
-k = 3
-dots = create_dots(0, 100, 100)
-center = get_centers(dots.copy(), k)
+def calculate_sum_from_dots_to_center(clusters: {}) -> int:
+    cluster_center_dots = clusters.keys()
+    distance = 0
+    for cluster_center_dot in cluster_center_dots:
+        cluster_dots = clusters.get(cluster_center_dot)
+        dot_from = cluster_center_dot
+        for dot_to in cluster_dots:
+            distance += np.math.sqrt(pow((dot_from.x - dot_to.x), 2) + pow((dot_from.y - dot_to.y), 2))
+    return distance
 
-clusters = create_cluster(dots.copy(), center.copy())
-print(clusters)
 
-new_center = recenter(clusters)
+def get_clusters(dots:[], k: int) -> {}:
+    center = get_centers(dots.copy(), k)
 
-# print(recenter(clusters))
-#
-while center != new_center:
-    clusters = create_cluster(dots.copy(), new_center.copy())
-    center = new_center
+    clusters = create_cluster(dots.copy(), center.copy())
     new_center = recenter(clusters)
+    while center != new_center:
+        clusters = create_cluster(dots.copy(), new_center.copy())
+        center = new_center
+        new_center = recenter(clusters)
+    return clusters
+
+
+dots = create_dots(0, 100, 100)
+sum_distance = 0
+calculate_next = True
+k = 2
+clusters = {}
+
+while calculate_next:
+    clusters = get_clusters(dots.copy(), k)
+    distance = calculate_sum_from_dots_to_center(clusters)
+    calculate_next = pow((sum_distance-distance)/distance, 2) > 0.05
+    sum_distance = distance
+    k += 1
 
 for key in clusters.keys():
     dots = clusters.get(key)
