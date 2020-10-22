@@ -129,12 +129,28 @@ calculate_next = True
 k = 2
 clusters = {}
 
+count = 9
+
+distance_by_keys = [None] * count
+d = [None] * count
+clusters_by_keys = [None] * count
 while calculate_next:
-    clusters = get_clusters(dots.copy(), k)
-    distance = calculate_sum_from_dots_to_center(clusters)
-    calculate_next = pow((sum_distance-distance)/distance, 2) > 0.05
+    clusters_by_keys[k] = get_clusters(dots.copy(), k)
+    distance = calculate_sum_from_dots_to_center(clusters_by_keys[k])
+    distance_by_keys[k] = distance
+    if k > 3:
+        d[k-1] = np.math.fabs(distance_by_keys[k - 1] - distance_by_keys[k]) / np.math.fabs(distance_by_keys[k - 2] - distance_by_keys[k - 1])
     sum_distance = distance
     k += 1
+    calculate_next = k < count
+
+
+print(d)
+d_no_none = l = [i for i in d if i is not None]
+print(d)
+index = d.index(min(d_no_none))
+clusters = clusters_by_keys[index]
+print("\nBest count: ", index)
 
 for key in clusters.keys():
     dots = clusters.get(key)
