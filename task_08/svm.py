@@ -55,5 +55,21 @@ while 1:
                 clf = svm.SVC(kernel='linear', C=1.0)
                 clf.fit(X=dots, y=k)
                 fited = True
+                coef = clf.coef_[0]
+                intercept = clf.intercept_
+                n = -coef[0] / coef[1]
+                m = intercept[0] / coef[1]
+                Y_1_1 = -m
+                X_1_1 = m / n
+                Y_1_2 = 1 / coef[1] + Y_1_1
+                X_1_2 = 1 / coef[0] + X_1_1
+                Y_1_3 = -1 / coef[1] + Y_1_1
+                X_1_3 = -1 / coef[0] + X_1_1
+                print(Y_1_1, X_1_1, Y_1_2, X_1_2, Y_1_3, X_1_3)
+                pg.draw.line(sc, GREEN, [0, Y_1_1], [X_1_1, 0], 1)
+                pg.draw.aaline(sc, GREEN, [0, Y_1_2], [X_1_2, 0], 1)
+                pg.draw.aaline(sc, GREEN, [0, Y_1_3], [X_1_3, 0], 1)
+
+                pg.display.update()
 
     pg.time.delay(20)
