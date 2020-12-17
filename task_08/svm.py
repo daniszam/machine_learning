@@ -18,6 +18,7 @@ k = []
 fited = False
 clf = None
 
+
 while 1:
     for i in pg.event.get():
         if i.type == pg.QUIT:
@@ -65,10 +66,21 @@ while 1:
                 X_1_2 = 1 / coef[0] + X_1_1
                 Y_1_3 = -1 / coef[1] + Y_1_1
                 X_1_3 = -1 / coef[0] + X_1_1
+
+                y11 = ((0/X_1_1) * -Y_1_1) + Y_1_1
+                y12 = ((600/X_1_1) * -Y_1_1) + Y_1_1
+
+                y21 = ((0 / X_1_2) * -Y_1_2) + Y_1_2
+                y22 = ((600 / X_1_2) * -Y_1_2) + Y_1_2
+
+                y31 = ((0 / X_1_3) * -Y_1_3) + Y_1_3
+                y32 = ((600 / X_1_3) * -Y_1_3) + Y_1_3
+
                 print(Y_1_1, X_1_1, Y_1_2, X_1_2, Y_1_3, X_1_3)
-                pg.draw.line(sc, GREEN, [0, Y_1_1], [X_1_1, 0], 1)
-                pg.draw.aaline(sc, GREEN, [0, Y_1_2], [X_1_2, 0], 1)
-                pg.draw.aaline(sc, GREEN, [0, Y_1_3], [X_1_3, 0], 1)
+
+                pg.draw.aaline(sc, GREEN, [0, y11], [600, y12], 1)
+                pg.draw.aaline(sc, GREEN, [0, y21], [600, y22], 1)
+                pg.draw.aaline(sc, GREEN, [0, y31], [600, y32], 1)
 
                 pg.display.update()
 
